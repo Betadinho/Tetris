@@ -5,4 +5,5 @@ Very simple Tetris clone built with vanilla JavaScript following [this guide](ht
 
 ![](tetris-demo.gif) 
 
-Some of the pieces (tetrominoes) colors are off in the demo gif. I guess that's just some compression issue, I have no clue though. :)
+Some of the pieces (tetrominoes) are displayed in a weird color or with other artifacts only in the demo gif!
+I guess it has to be some compression issue, I have no clue though. :)
