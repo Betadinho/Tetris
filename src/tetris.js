@@ -21,7 +21,7 @@ function drawSquare(x,y,color){
 let board = [];
 for( r = 0; r <ROW; r++){
     board[r] = [];
-    for(c = 0; c < COL; c++){ 
+    for(c = 0; c < COL; c++){
         board[r][c] = VACANT;
     }
 }
@@ -63,10 +63,10 @@ let p = randomPiece();
 function Piece(tetromino,color){
     this.tetromino = tetromino;
     this.color = color;
-    
+
     this.tetrominoN = 0; // we start from the first pattern
     this.activeTetromino = this.tetromino[this.tetrominoN];
-    
+
     // we need to control the pieces
     this.x = 3;
     this.y = -2;
@@ -110,7 +110,6 @@ Piece.prototype.moveDown = function(){
         this.lock();
         p = randomPiece();
     }
-    
 }
 
 // move Right the piece
@@ -135,7 +134,6 @@ Piece.prototype.moveLeft = function(){
 Piece.prototype.rotate = function(){
     let nextPattern = this.tetromino[(this.tetrominoN + 1)%this.tetromino.length];
     let kick = 0;
-    
     if(this.collision(0,0,nextPattern)){
         if(this.x > COL/2){
             // it's the right wall
@@ -145,7 +143,6 @@ Piece.prototype.rotate = function(){
             kick = 1; // we need to move the piece to the right
         }
     }
-    
     if(!this.collision(kick,0,nextPattern)){
         this.unDraw();
         this.x += kick;
@@ -155,7 +152,8 @@ Piece.prototype.rotate = function(){
     }
 }
 
-let score = 0;
+let score = 100;
+scoreElement.innerHTML = score;
 
 Piece.prototype.lock = function(){
     for( r = 0; r < this.activeTetromino.length; r++){
@@ -199,7 +197,6 @@ Piece.prototype.lock = function(){
     }
     // update the board
     drawBoard();
-    
     // update the score
     scoreElement.innerHTML = score;
 }
@@ -216,7 +213,6 @@ Piece.prototype.collision = function(x,y,piece){
             // coordinates of the piece after movement
             let newX = this.x + c + x;
             let newY = this.y + r + y;
-            
             // conditions
             if(newX < 0 || newX >= COL || newY >= ROW){
                 return true;
@@ -253,39 +249,46 @@ function CONTROL(event){
     }
 }
 
-// drop the piece every 1sec
+// drop the piece every 1sec, decresing by 100ms for every 100 points
 
 let dropStart = Date.now();
 let gameOver = false;
 function drop(){
     let now = Date.now();
     let delta = now - dropStart;
-    if(delta > 1000){
+
+	let weight = 0;
+	if (score <= 100) {
+		weight = 100;
+	}
+	else if (score <= 200) {
+		weight = 200;
+	}
+	else if (score <= 300) {
+		weight = 300;
+	}
+	else if (score <= 400) {
+		weight = 400;
+	}
+	else if (score <= 500) {
+		weight = 500;
+	}
+	else if (score <= 600) {
+		weight = 600;
+	}
+	else if (score <= 1000) {
+		weight = 700;
+	}
+
+	if (delta + weight > 1000){
         p.moveDown();
         dropStart = Date.now();
+		console.log(weight);
     }
+
     if( !gameOver){
         requestAnimationFrame(drop);
     }
 }
 
 drop();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
