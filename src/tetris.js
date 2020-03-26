@@ -152,7 +152,7 @@ Piece.prototype.rotate = function(){
     }
 }
 
-let score = 100;
+let score = 0;
 scoreElement.innerHTML = score;
 
 Piece.prototype.lock = function(){
