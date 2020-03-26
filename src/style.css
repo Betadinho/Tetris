@@ -1,8 +1,9 @@
 body {
     overflow: hidden;
-    background-image: linear-gradient(to right , #cc2b5e , #753a88 , #cc2b5e);
-
+    /*background-image: linear-gradient(to right , #cc2b5e , #753a88 , #cc2b5e);*/
+    background-color: White;
 }
+
 .container {
     display: flex;
     height: 100vh;
@@ -11,6 +12,7 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 .game {
     height: 100%;
 }
@@ -36,8 +38,8 @@ body {
 }
 
 .board{
-    border: 1px black solid;
-    background-color: black;
+    border: 1px Black solid;
+    background-color: White;
 }
 
 .headline {

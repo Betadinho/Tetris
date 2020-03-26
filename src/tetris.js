@@ -1,18 +1,19 @@
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext("2d");
 const scoreElement = document.getElementById("score");
+const levelElement = document.getElementById("level");
 
 const ROW = 20;
 const COL = COLUMN = 10;
 const SQ = squareSize = 40;
-const VACANT = "BLACK"; // color of an empty square
+const VACANT = "WHITE"; // color of an empty square
 
 // draw a square
 function drawSquare(x,y,color){
     ctx.fillStyle = color;
     ctx.fillRect(x*SQ,y*SQ,SQ,SQ);
 
-    ctx.strokeStyle = "BLACK";
+    ctx.strokeStyle = "WHITE";
     ctx.strokeRect(x*SQ,y*SQ,SQ,SQ);
 }
 
@@ -58,7 +59,7 @@ function randomPiece(){
 
 let p = randomPiece();
 
-// The Object Piece
+// The piece object
 
 function Piece(tetromino,color){
     this.tetromino = tetromino;
@@ -98,7 +99,7 @@ Piece.prototype.unDraw = function(){
     this.fill(VACANT);
 }
 
-// move Down the piece
+// move the piece down
 
 Piece.prototype.moveDown = function(){
     if(!this.collision(0,1,this.activeTetromino)){
@@ -112,7 +113,7 @@ Piece.prototype.moveDown = function(){
     }
 }
 
-// move Right the piece
+// move the piece to the right
 Piece.prototype.moveRight = function(){
     if(!this.collision(1,0,this.activeTetromino)){
         this.unDraw();
@@ -121,7 +122,7 @@ Piece.prototype.moveRight = function(){
     }
 }
 
-// move Left the piece
+// move the piece to the left
 Piece.prototype.moveLeft = function(){
     if(!this.collision(-1,0,this.activeTetromino)){
         this.unDraw();
@@ -226,8 +227,7 @@ Piece.prototype.collision = function(x,y,piece){
                 return true;
             }
         }
-    }
-    return false;
+    } return false;
 }
 
 // CONTROL the piece
@@ -238,57 +238,59 @@ function CONTROL(event){
     if(event.keyCode == 37){
         p.moveLeft();
         dropStart = Date.now();
-    }else if(event.keyCode == 38){
+    } else if(event.keyCode == 38){
         p.rotate();
         dropStart = Date.now();
-    }else if(event.keyCode == 39){
+    } else if(event.keyCode == 39){
         p.moveRight();
         dropStart = Date.now();
-    }else if(event.keyCode == 40){
+    } else if(event.keyCode == 40){
         p.moveDown();
     }
 }
 
-// drop the piece every 1sec, decresing by 100ms for every 100 points
+// drop the piece every 0.9sec - (x = 100p) 
 
+let level = 1;
 let dropStart = Date.now();
 let gameOver = false;
 function drop(){
     let now = Date.now();
     let delta = now - dropStart;
 
-	let weight = 0;
-	if (score <= 100) {
-		weight = 100;
-	}
-	else if (score <= 200) {
-		weight = 200;
-	}
-	else if (score <= 300) {
-		weight = 300;
-	}
-	else if (score <= 400) {
-		weight = 400;
-	}
-	else if (score <= 500) {
-		weight = 500;
-	}
-	else if (score <= 600) {
-		weight = 600;
-	}
-	else if (score <= 1000) {
-		weight = 700;
+	if (score <= 50) {
+        delta -= 100;
+        level = 2;
+	} else if (score <= 200) {
+        delta -= 200;
+        level = 3;
+	} else if (score <= 300) {
+        delta -= 300;
+        level = 4;
+	} else if (score <= 400) {
+        delta -= 400;
+        level = 5;
+	} else if (score <= 500) {
+        delta -= 500;
+        level = 6;
+	} else if (score <= 600) {
+        delta -= 600;
+        level = 7;
+	} else if (score <= 1000) {
+        delta -= 700;
+        level = 8;
 	}
 
-	if (delta + weight > 1000){
+	if (delta > 900){
         p.moveDown();
         dropStart = Date.now();
-		console.log(weight);
     }
 
-    if( !gameOver){
+    if(!gameOver){
         requestAnimationFrame(drop);
     }
+
+    levelElement.innerHTML = level;
 }
 
 drop();
